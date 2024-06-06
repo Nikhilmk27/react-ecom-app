@@ -5,8 +5,12 @@ import YouTubeIcon from '@mui/icons-material/YouTube';
 import RoomIcon from '@mui/icons-material/Room';
 import PhoneIcon from '@mui/icons-material/Phone';
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
+import { mobile } from "../responsive";
 const Container = styled.div`
 display: flex;
+${mobile`
+   flex-direction:column;
+  `}
 `;
 const Left = styled.div`
 flex: 1;
@@ -40,6 +44,9 @@ margin: 5px;
 const Center = styled.div`
 flex:1;
 padding: 20px;
+${mobile`
+    display:none;
+  `}
 
 `;
 const Title = styled.h3`
@@ -60,6 +67,9 @@ margin-bottom:10px;
 const Right = styled.div`
 flex:1;
 padding: 20px;
+${mobile`
+   background-color:gray;
+  `}
 `;
 const ContactItem = styled.div`
   margin-bottom:20px;
