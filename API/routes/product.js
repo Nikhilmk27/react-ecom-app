@@ -83,6 +83,10 @@ router.get("/", async (req,res) => {
 
 })
 
+// admin id password{
+//     "email":"webadmin@gmail.com",
+//     "password":"admin"
+// }
   
 
 module.exports = router;

@@ -6,6 +6,7 @@ import Footer from '../components/Footer'
 import RemoveOutlinedIcon from '@mui/icons-material/RemoveOutlined';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import { mobile } from '../responsive'
+import { useSelector } from 'react-redux'
 const Container = styled.div``
 const Wrapper = styled.div`
 padding: 20px;
@@ -65,6 +66,9 @@ display: flex;
 `
 const Image = styled.img`
 width: 200px;
+height: 200px;
+margin-bottom:5px;
+
 `
 const Details = styled.div`
 padding: 20px;
@@ -124,7 +128,7 @@ flex: 1;
 border: .5px solid gray;
 border-radius: 10px;
 padding: 20px;
-height: 50vh;
+height: 60vh;
 
 `
 const SummeryTitle = styled.h1`
@@ -152,6 +156,7 @@ font-weight: 600;
 
 
 const Cart = () => {
+  const cart = useSelector(state => state.cart)
   return (
     <Container>
         <Navbar/>
@@ -169,58 +174,41 @@ const Cart = () => {
             </Top>
             <Bottom>
               <Info>
-                <Product>
+                {cart.products.map(product =>(
+                <Product  key={product.id}>
                   <ProductDetail>
-                    <Image src = "https://i.pinimg.com/736x/6f/35/a7/6f35a714578624a71641dce376272dd9.jpg"/>
+                    <Image src = {product.image}/>
                     <Details>
-                      <ProductName><b>product:</b>name</ProductName>
-                      <ProductId><b>id:</b>id</ProductId>
-                      <ProductColor color= "black"/>
-                      <ProductSize><b>size:</b>m</ProductSize>
+                      <ProductName><b>product:</b>{product.title}</ProductName>
+                      <ProductId><b>id:</b>{product._id}</ProductId>
+                      <ProductColor color= {product.color}/>
+                      <ProductSize><b>size:</b>{product.size}</ProductSize>
                     </Details>
 
                   </ProductDetail>
                   <PriceDetail>
                    <ProductAmountContainer>
                     <RemoveOutlinedIcon/>
-                    <ProductAmount>1</ProductAmount>
+                    <ProductAmount>{product.quantity}</ProductAmount>
                     <AddOutlinedIcon/>
 
                    </ProductAmountContainer>
-                   <ProductPrice>RS 500</ProductPrice>
+                   <ProductPrice>{product.price*product.quantity}</ProductPrice>
                   </PriceDetail>
+                  
 
                 </Product>
+                
+                ))}
                 <Hr></Hr>
 
-                <Product>
-                  <ProductDetail>
-                    <Image src = "https://i.pinimg.com/736x/6f/35/a7/6f35a714578624a71641dce376272dd9.jpg"/>
-                    <Details>
-                      <ProductName><b>product:</b>name</ProductName>
-                      <ProductId><b>id:</b>id</ProductId>
-                      <ProductColor color= "black"/>
-                      <ProductSize><b>size:</b>m</ProductSize>
-                    </Details>
 
-                  </ProductDetail>
-                  <PriceDetail>
-                   <ProductAmountContainer>
-                    <RemoveOutlinedIcon/>
-                    <ProductAmount>1</ProductAmount>
-                    <AddOutlinedIcon/>
-
-                   </ProductAmountContainer>
-                   <ProductPrice>RS 500</ProductPrice>
-                  </PriceDetail>
-
-                </Product>
               </Info>
               <Summary>
                 <SummeryTitle>ORDER SUMERY</SummeryTitle>
                 <SummeryItem>
                   <SummeryItemText>sub total</SummeryItemText>
-                  <SummeryItemPrice>RS 500</SummeryItemPrice>
+                  <SummeryItemPrice>{cart.total}</SummeryItemPrice>
                 </SummeryItem>
                 <SummeryItem>
                   <SummeryItemText>shiping charge</SummeryItemText>
@@ -232,7 +220,7 @@ const Cart = () => {
                 </SummeryItem>
                 <SummeryItem type="total">
                   <SummeryItemText>TOTAL</SummeryItemText>
-                  <SummeryItemPrice>RS 500</SummeryItemPrice>
+                  <SummeryItemPrice>{cart.total}</SummeryItemPrice>
                 </SummeryItem>
                 <Button>CHECKOUT NOW</Button>
 
