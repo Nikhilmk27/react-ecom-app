@@ -85,6 +85,10 @@ const MenuItems = styled.div`
     margin-left: 2px;
   `} 
 `;
+const StyledLink = styled(Link)`
+  text-decoration: none; /* Remove underline */
+  color: inherit; /* Inherit color from parent */
+`;
 
 const Navbar = () => {
   const quantity = useSelector(state => state.cart.quantity)
@@ -101,8 +105,12 @@ const Navbar = () => {
         </Left>
         <Center><Logo>FASHION</Logo></Center>
         <Right>
-          <MenuItems>Register</MenuItems>
+        <StyledLink to="/register">
+      <MenuItems>Register</MenuItems>
+    </StyledLink>
+          <styledLink to="/login">
           <MenuItems>Sign In</MenuItems>
+          </styledLink>
           <Link to="/cart">
           <MenuItems>
             <Badge badgeContent={quantity} color="primary">

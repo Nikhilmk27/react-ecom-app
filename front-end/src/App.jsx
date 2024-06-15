@@ -7,9 +7,10 @@ import Register from "./pages/Register";
 import NotFound from "./pages/notfound";
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Routes, Route ,Navigate} from 'react-router-dom';
+import { useSelector } from "react-redux";
 
 function App() {
-  const user = true;
+  const user = useSelector((state) => state.user.currentUser)
   return (
     <BrowserRouter>
       <Routes>

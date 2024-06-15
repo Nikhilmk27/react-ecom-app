@@ -14,10 +14,7 @@ app.use(cors({
 app.use(express.json());
 dotenv.config();
 
-  mongoose.connect(process.env.MONGO_URL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  mongoose.connect(process.env.MONGO_URL)
 .then(()=>{
     console.log("db connection sucessfull")
 }).catch((err)=>{
@@ -37,5 +34,5 @@ app.use("/api/carts",cartRout)
 
 
 app.listen(5000, () => {
-  console.log("backed server is running!");
+  console.log("backend server is running!");
 });
