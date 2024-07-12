@@ -1,5 +1,6 @@
 import Home from "./pages/Home";
 import Cart from "./pages/Cart";
+import Checkcopy from "./pages/Checkcopy"
 import Login from "./pages/Login";
 import Product from "./pages/Product";
 import ProductList from "./pages/ProductList";
@@ -18,6 +19,7 @@ function App() {
         <Route path="/login" element={user?<Navigate to ="/"/>:<Login /> } />
         <Route path="/register" element={user?<Navigate to ="/"/>:<Register /> } />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/checkout" element={<Checkcopy />} />
         <Route path="/product/:id" element={<Product />} />
         <Route path="/Products/:category"element={<ProductList />} />
         <Route path="*" element={<NotFound />} />

@@ -2,7 +2,11 @@ import styled from "styled-components"
 import { mobile } from "../responsive"
 import { useState } from "react"
 import {login} from "../redux/apiCalls"
+import Navbar from "../components/Navbar"
 import { useDispatch, useSelector } from "react-redux"
+import { loginSucess } from "../redux/userRedux"
+import { setCart,clearCart } from "../redux/cartRedux"
+import { BrowserRouter, Routes, Route, Navigate, Link } from 'react-router-dom';
 
 const Container = styled.div`
 width: 100%;
@@ -66,7 +70,7 @@ cursor: pointer;
 }
 
 `
-const Link = styled.a`
+const Links = styled.a`
 margin: 5px 0px;
 font-size: 12px;
 cursor: pointer;
@@ -85,25 +89,30 @@ const Login = () => {
     login(dispatch,{email,password})
   }
   return (
+    <>
+    <Navbar/>
     <Container>
     <Wraper>
         <Title>SIGN IN</Title>
         <Form>
-            <Input placeholder="user name"
+            <Input placeholder="email id"
             onChange={(e) => setEmail(e.target.value)}/>
             <Input placeholder="password"
             type="password"
              onChange={(e) => setPassword(e.target.value)}/>
             <LoginButton onClick={handleClick} disabled={isFetching}>LOGIN</LoginButton>
             {error && <Error>something went wrong</Error>}
-            <Link>forgot password?</Link>
-            <Link>dont have an account? sign up</Link>
+            <Links>forgot password?</Links>
+            <Link to="/register">
+            <Links to="/register"> dont have an account? sign up</Links>
+            </Link>
 
         </Form>
 
     </Wraper>
 
 </Container>
+</>
   )
 }
 

@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const User = require("../models/User");
+const Cart = require("../models/Cart")
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken")
 
@@ -52,6 +53,18 @@ router.post("/login",async(req,res) => {
               },process.env.JWT_SEC,{expiresIn:"3d"})
               const {password,...others} = userExist._doc;
               res.status(200).json({...others,accessToken})
+              // chek if theuser has a cat alredy
+              const existingCart = await Cart.findOne({userId :userExist._id})
+              if(!existingCart){
+                // ceate a new cart for the user
+                const newCart = new Cart({
+                  userId: userExist._id,
+                  products: [],
+                  quantity: 0,
+                  total: 0,
+                });
+                await newCart.save()
+              }
             }
           } else {
             res.status(500).json("wrong password")
@@ -64,3 +77,20 @@ router.post("/login",async(req,res) => {
 
 
 module.exports = router;
+
+
+//   const cartData = { userId: userExist._id, products: [], quantity: 0, total: 0 };
+//   dispatch(setCart(cartData));
+
+//   res.status(200).json(userData);
+// } else {
+//   res.status(401).json("Wrong password");
+// }
+// } else {
+// res.status(404).json("User not found");
+// }
+// } catch (error) {
+// console.log(error.message);
+// res.status(500).json("Server error");
+// }
+// });

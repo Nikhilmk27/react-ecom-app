@@ -11,13 +11,19 @@ const Container = styled.div`
     margin: 0px;
   `}
 `;
+const Cathead = styled.div`
+color: green;
+`
 const Categories = () => {
   return (
+  <>
+  <Cathead>CATEGORIES</Cathead>
     <Container>
         {categories.map(item =>(
             <CategoryItem item={item} key = {item.id}/>
         ))}
     </Container>
+    </>
   )
 }
 

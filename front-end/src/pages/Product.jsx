@@ -12,6 +12,8 @@ import { useEffect, useState } from "react";
 import { publicRequest } from "../requestMethods";
 import { addProduct } from "../redux/cartRedux";
 import { useDispatch } from "react-redux";
+import { addToCart } from "../redux/apiCalls";
+import { useSelector } from "react-redux";
 const Container = styled.div``;
 const Wrapper = styled.div`
   padding: 50px;
@@ -123,11 +125,12 @@ const Product = () => {
   const [quantity, setQuantity] = useState(1);
   const [size, setSize] = useState("");
   const [color, setColor] = useState("");
+  const currentUser = useSelector((state) => state.user.currentUser);
   const dispatch = useDispatch()
   useEffect(() => {
     const getProduct = async () => {
       try {
-        const res = await publicRequest.get("/products/find/" + id);
+        const res = await publicRequest.get(`/products/find/${id}`);
         console.log(res);
         setProduct(res.data);
       } catch (error) {
@@ -143,10 +146,25 @@ const Product = () => {
       setQuantity(quantity + 1);
     }
   };
+  
 
-  const handleClick = ()=> {
-    dispatch(addProduct({...product,quantity,color,size}))
-  }
+
+  const handleClick = () => {
+    if (currentUser) {
+      const productToAdd = { 
+      ...product,
+        productId: product._id,
+        quantity, 
+        color, 
+        size 
+    };
+    console.log(productToAdd)
+      addToCart(dispatch, productToAdd, currentUser._id);
+    } else {
+      // Handle case where user is not logged in
+      console.error("User not logged in");
+    }
+  };
 
   return (
     <Container>

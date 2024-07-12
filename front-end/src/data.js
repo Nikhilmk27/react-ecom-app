@@ -24,19 +24,19 @@ export const sliderItems = [
 export const categories = [
     {
       id: 1,
-      img: "https://availeverything.com/public/uploads/all/PORSBbhlpw6szuhKpu59GWFM9Dzc4njSx1iGyGpn.jpg",
+      img: "https://i.redd.it/go5w53lfrlo91.jpg",
       title: "HALF SAREE",
       cat:"halfsaree"
     },
     {
       id: 2,
-      img: "https://i.pinimg.com/736x/2a/92/aa/2a92aa8411a6427b734c2128ecc423b8.jpg",
+      img: "https://i.pinimg.com/736x/16/aa/33/16aa33e04b1cdad34f6480221b789863.jpg",
       title: "SAREE",
       cat:"saree"
     },
     {
       id: 3,
-      img: "https://i.pinimg.com/736x/16/aa/33/16aa33e04b1cdad34f6480221b789863.jpg",
+      img: "https://www.kerala9.com/wp-content/uploads/2022/07/actress-ananya-in-churidar-outfit-004.jpg",
       title: "SALWAR SUIT",
       cat:"salwarsuit"
     },

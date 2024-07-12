@@ -1,21 +1,25 @@
-import React from 'react';
-import styled from 'styled-components';
-import SearchIcon from '@mui/icons-material/Search'; 
-import Badge from '@mui/material/Badge';
-import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
-import { mobile } from '../responsive';
-import { useSelector } from 'react-redux';
-import { BrowserRouter, Routes, Route, Navigate, Link } from 'react-router-dom';
+import React from "react";
+import styled from "styled-components";
+import SearchIcon from "@mui/icons-material/Search";
+import Badge from "@mui/material/Badge";
+import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
+import { mobile } from "../responsive";
+import { useSelector, useDispatch } from "react-redux";
+import { BrowserRouter, Routes, Route, Navigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
+import { logout } from "../redux/userRedux";
+import { clearCart } from "../redux/cartRedux";
 
 const Container = styled.div`
-  height: 60px;
+  height: 50px;
   ${mobile`
     height: 50px;
     margin-left: 2px; 
   `}
 `;
 const Wrapper = styled.div`
-  padding: 10px 20px;
+  padding: 5px 10px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -37,7 +41,7 @@ const Language = styled.span`
   cursor: pointer;
   ${mobile`
     display: none;
-  `} 
+  `}
 `;
 const SearchContainer = styled.div`
   border: 1px solid lightgray;
@@ -70,29 +74,43 @@ const Right = styled.div`
   flex: 1;
   display: flex;
   align-items: center;
-  justify-content: flex-end; 
+  justify-content: flex-end;
   ${mobile`
     flex: 2;
     justify-content: center;
   `}
 `;
 const MenuItems = styled.div`
-  font-size: 14px;
+  font-size: 12px;
   cursor: pointer;
   margin-left: 25px;
   ${mobile`
-    font-size: 10px;
+    font-size: 8px;
     margin-left: 2px;
-  `} 
+  `}
 `;
 const StyledLink = styled(Link)`
-  text-decoration: none; /* Remove underline */
-  color: inherit; /* Inherit color from parent */
+  text-decoration: none; 
+  color: inherit;
+`;
+
+const PlainButton = styled.button`
+  all: unset;
+  cursor: pointer; /* optional: to keep pointer cursor on hover */
 `;
 
 const Navbar = () => {
-  const quantity = useSelector(state => state.cart.quantity)
-  console.log(quantity)
+  const dispatch = useDispatch();
+  const quantity = useSelector((state) => state.cart.quantity);
+  const currentUser = useSelector((state) => state.user.currentUser);
+  const navigate = useNavigate();
+  console.log(quantity);
+  const handleLogout = (e) => {
+    e.preventDefault();
+    Cookies.remove("token"); // Remove the JWT token from cookies
+    dispatch(logout()); // Update the Redux state
+    navigate("/");
+  };
   return (
     <Container>
       <Wrapper>
@@ -100,24 +118,36 @@ const Navbar = () => {
           <Language>EN</Language>
           <SearchContainer>
             <Input />
-            <SearchIcon style={{ color: 'gray', fontSize: '15px' }} />
+            <SearchIcon style={{ color: "gray", fontSize: "15px" }} />
           </SearchContainer>
         </Left>
-        <Center><Logo>FASHION</Logo></Center>
+        <Center>
+          <Logo>FASHION</Logo>
+        </Center>
         <Right>
-        <StyledLink to="/register">
-      <MenuItems>Register</MenuItems>
-    </StyledLink>
-          <styledLink to="/login">
-          <MenuItems>Sign In</MenuItems>
-          </styledLink>
-          <Link to="/cart">
+          <StyledLink to="/register">
+            <MenuItems>Register</MenuItems>
+          </StyledLink>
+          <StyledLink to="/login">
+            <MenuItems>Sign In</MenuItems>
+          </StyledLink>
           <MenuItems>
-            <Badge badgeContent={quantity} color="primary">
-              <ShoppingCartOutlinedIcon />
-            </Badge>
+            <PlainButton onClick={handleLogout}>Logout</PlainButton>
           </MenuItems>
-          </Link>
+          {currentUser ? (<Link to="/cart">
+            <MenuItems>
+              <Badge badgeContent={quantity} color="primary">
+                <ShoppingCartOutlinedIcon />
+              </Badge>
+            </MenuItems>
+          </Link>):(
+            <MenuItems>
+            
+              <ShoppingCartOutlinedIcon />
+            
+          </MenuItems>
+
+          )}
         </Right>
       </Wrapper>
     </Container>

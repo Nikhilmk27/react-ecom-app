@@ -3,17 +3,19 @@ const bcrypt = require("bcrypt"); // Import bcrypt
 const router = require("express").Router();
 const Order = require("../models/Order")
 
-// CREATE ORDER
-router.post("/", verifyTokenAndAuthorization, async (req, res) => {
-    const newOrder = new Order(req.body);
+// CREATE ORDER USING RAZORPAY
+// router.post("/", verifyTokenAndAuthorization, async (req, res) => {
+//     const newOrder = new Order(req.body);
   
-    try {
-      const savedOrder = await newOrder.save();
-      res.status(200).json(savedOrder);
-    } catch (err) {
-      res.status(500).json(err);
-    }
-  });
+//     try {
+//       const savedOrder = await newOrder.save();
+//       res.status(200).json(savedOrder);
+//     } catch (err) {
+//       res.status(500).json(err);
+//     }
+//   });
+
+
 
 // UPDATE ORDER
 router.put("/:id", verifyTokenAndAdmin, async (req, res) => {
