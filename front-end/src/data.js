@@ -1,7 +1,7 @@
 export const sliderItems = [
     {
       id: 1,
-      img: "https://ivalinmabia.com/cdn/shop/files/padmaja-red-and-black-cotton-halfsaree-half-sarees-486.webp?v=1692597680",
+      img: "https://www.southindiafashion.com/wp-content/uploads/2023/04/trisha-krishnan-royal-blue-anarkali-ps-2-promotions-scaled.jpg",
       title: "SUMMER SALE",
       desc: "DON'T COMPROMISE ON STYLE! GET FLAT 15% OFF FOR NEW ARRIVALS.",
       bg: "#003300",

@@ -12,6 +12,109 @@ import { useDispatch } from "react-redux";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { deleteProduct } from "../redux/apiCalls";
 import { BrowserRouter, Routes, Route, Navigate, Link } from "react-router-dom";
+
+const Cart = () => {
+  const cart = useSelector((state) => state.cart);
+ console.log(cart)
+  const userId = useSelector((state) => state.cart.userId);
+  const dispatch = useDispatch();
+
+  const handleDeleteProduct = (ProductId) => {
+    console.log(ProductId, userId);
+    deleteProduct(dispatch, userId, ProductId);
+  };
+  return (
+    <Container>
+      <Navbar />
+      <Announcement />
+      <Wrapper>
+        <Title>my cart</Title>
+        <Top>
+          <Link to={"/"}>
+          <TopButton>CONTINUE SHOPING</TopButton>
+          </Link>
+          {/* <TopTexts>
+            <TopText>shopping cart()</TopText>
+            <TopText>your wishlist()</TopText>
+          </TopTexts>
+          <TopButton type="filled">CHECK OUT NOW</TopButton> */}
+        </Top>
+        <Bottom>
+          <Info>
+            {cart.products.map((product) => (
+              <Product key={product._id}>
+                <ProductDetail>
+                  <Image src={product.image} />
+                  <Details>
+                    <ProductName>
+                      <b>product:</b>
+                      {product.title}
+                    </ProductName>
+                    <ProductId>
+                      <b>id:</b>
+                      {product._id}
+                    </ProductId>
+                    <ProductColor color={product.color} />
+                    <ProductSize>
+                      <b>size:</b>
+                      {product.size}
+                    </ProductSize>
+                    <ProductPrice>
+                    price:{product.price * product.quantity}
+                  </ProductPrice>
+                  <PriceDetail>
+                  <ProductAmountContainer>
+                    <RemoveOutlinedIcon />
+                    <ProductAmount>{product.quantity}</ProductAmount>
+                    <AddOutlinedIcon />
+                  </ProductAmountContainer>
+                  
+                </PriceDetail>
+                    
+                    <RemoveButton
+                      onClick={() => handleDeleteProduct(product._id)}
+                    >
+                      <DeleteIcon />
+                    </RemoveButton>
+                  </Details>
+                </ProductDetail>
+                
+              </Product>
+            ))}
+            <Hr></Hr>
+          </Info>
+          <Summary>
+            <SummeryTitle>ORDER SUMERY</SummeryTitle>
+            <SummeryItem>
+              <SummeryItemText>sub total</SummeryItemText>
+              <SummeryItemPrice>{cart.total}</SummeryItemPrice>
+            </SummeryItem>
+            <SummeryItem>
+              <SummeryItemText>shiping charge</SummeryItemText>
+              <SummeryItemPrice>RS 50</SummeryItemPrice>
+            </SummeryItem>
+            <SummeryItem>
+              <SummeryItemText>shiping discount</SummeryItemText>
+              <SummeryItemPrice>RS 50</SummeryItemPrice>
+            </SummeryItem>
+            <SummeryItem type="total">
+              <SummeryItemText>TOTAL</SummeryItemText>
+              <SummeryItemPrice>{cart.total}</SummeryItemPrice>
+            </SummeryItem>
+            <StyledLink to="/checkout">
+            <Button>
+              CHECKOUT NOW
+            </Button>
+            </StyledLink>
+          </Summary>
+        </Bottom>
+      </Wrapper>
+      <Footer />
+    </Container>
+  );
+};
+
+
 const Container = styled.div``;
 const Wrapper = styled.div`
   padding: 20px;
@@ -53,11 +156,15 @@ const Bottom = styled.div`
   display: flex;
   justify-content: space-between;
   ${mobile`
+  display:flex;
     flex-direction:column;
   `}
 `;
 const Info = styled.div`
   flex: 3;
+  ${mobile`
+  
+  `}
 `;
 const Product = styled.div`
   display: flex;
@@ -69,12 +176,16 @@ const Product = styled.div`
 const ProductDetail = styled.div`
   flex: 2;
   display: flex;
+  ${mobile`
+    flex-direction:column;
+  `}
 `;
 const Image = styled.img`
   width: 200px;
   height: 200px;
   margin-bottom: 5px;
 `;
+
 const Details = styled.div`
   padding: 20px;
   display: flex;
@@ -174,104 +285,5 @@ const StyledLink = styled(Link)`
   text-decoration: none;
   color: inherit;
 `;
-
-const Cart = () => {
-  const cart = useSelector((state) => state.cart);
- console.log(cart)
-  const userId = useSelector((state) => state.cart.userId);
-  const dispatch = useDispatch();
-
-  const handleDeleteProduct = (ProductId) => {
-    console.log(ProductId, userId);
-    deleteProduct(dispatch, userId, ProductId);
-  };
-  return (
-    <Container>
-      <Navbar />
-      <Announcement />
-      <Wrapper>
-        <Title>my cart</Title>
-        <Top>
-          <TopButton>CONTINUE SHOPING</TopButton>
-          <TopTexts>
-            <TopText>shopping cart(2)</TopText>
-            <TopText>your wishlist(0)</TopText>
-          </TopTexts>
-          <TopButton type="filled">CHECK OUT NOW</TopButton>
-        </Top>
-        <Bottom>
-          <Info>
-            {cart.products.map((product) => (
-              <Product key={product._id}>
-                <ProductDetail>
-                  <Image src={product.image} />
-                  <Details>
-                    <ProductName>
-                      <b>product:</b>
-                      {product.title}
-                    </ProductName>
-                    <ProductId>
-                      <b>id:</b>
-                      {product._id}
-                    </ProductId>
-                    <ProductColor color={product.color} />
-                    <ProductSize>
-                      <b>size:</b>
-                      {product.size}
-                    </ProductSize>
-                    <ProductPrice>
-                    price:{product.price * product.quantity}
-                  </ProductPrice>
-                  <PriceDetail>
-                  <ProductAmountContainer>
-                    <RemoveOutlinedIcon />
-                    <ProductAmount>{product.quantity}</ProductAmount>
-                    <AddOutlinedIcon />
-                  </ProductAmountContainer>
-                  
-                </PriceDetail>
-                    
-                    <RemoveButton
-                      onClick={() => handleDeleteProduct(product._id)}
-                    >
-                      <DeleteIcon />
-                    </RemoveButton>
-                  </Details>
-                </ProductDetail>
-                
-              </Product>
-            ))}
-            <Hr></Hr>
-          </Info>
-          <Summary>
-            <SummeryTitle>ORDER SUMERY</SummeryTitle>
-            <SummeryItem>
-              <SummeryItemText>sub total</SummeryItemText>
-              <SummeryItemPrice>{cart.total}</SummeryItemPrice>
-            </SummeryItem>
-            <SummeryItem>
-              <SummeryItemText>shiping charge</SummeryItemText>
-              <SummeryItemPrice>RS 50</SummeryItemPrice>
-            </SummeryItem>
-            <SummeryItem>
-              <SummeryItemText>shiping discount</SummeryItemText>
-              <SummeryItemPrice>RS 50</SummeryItemPrice>
-            </SummeryItem>
-            <SummeryItem type="total">
-              <SummeryItemText>TOTAL</SummeryItemText>
-              <SummeryItemPrice>{cart.total}</SummeryItemPrice>
-            </SummeryItem>
-            <StyledLink to="/checkout">
-            <Button>
-              CHECKOUT NOW
-            </Button>
-            </StyledLink>
-          </Summary>
-        </Bottom>
-      </Wrapper>
-      <Footer />
-    </Container>
-  );
-};
 
 export default Cart;

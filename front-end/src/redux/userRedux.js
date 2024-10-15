@@ -1,5 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { clearCart } from "./cartRedux";
+import Cookies from "js-cookie";
+
 const userSlice = createSlice({
     name:"user",
     initialState : {
@@ -23,6 +25,8 @@ const userSlice = createSlice({
         },
         logout : (state) =>{
             state.currentUser = null;
+            localStorage.removeItem("user");
+  Cookies.remove("token");
 
         },
         signupStart: (state) => {
@@ -30,7 +34,7 @@ const userSlice = createSlice({
             state.signupSuccess = false;
             state.signupError = false;
         },
-        signupSuccess: (state) => {
+        signupSuccessAction: (state) => {
             state.isFetching = false;
             state.signupSuccess = true;
             state.signupError = false;
@@ -46,13 +50,10 @@ const userSlice = createSlice({
             state.signupSuccess = false;
         },
         
+        
 
     },
-    extraReducers: (builder) => {
-        builder.addCase(clearCart, (state) => {
-            state.currentUser = null;
-        });
-    }
+    
 
 })
 
@@ -61,7 +62,21 @@ export const {loginStart,
     loginSucess,
     logout,
     signupStart,
-    signupSuccess,
+    signupSuccessAction,
     signupFailure,
     signupSuccessReset} = userSlice.actions;
 export default userSlice.reducer
+
+// Thunk for checking user authentication
+export const checkAuth = () => (dispatch) => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    const token = Cookies.get("token");
+    if (user && token) {
+        dispatch(loginSucess(user));
+    }
+};
+// extraReducers: (builder) => {
+//     builder.addCase(clearCart, (state) => {
+//         state.currentUser = null;
+//     });
+// }

@@ -14,7 +14,7 @@ font-weight:500;
 const Announcement = () => {
   return (
     <Container>
-        Free Shipping On Order Over $50
+        Free Shipping On Order Over RS 1000
     </Container>
   )
 }

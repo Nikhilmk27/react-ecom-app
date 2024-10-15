@@ -1,24 +1,25 @@
-import { useState, useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { useFormik } from 'formik';
 import validationSchema from '../validationSchema';
 import { mobile } from '../responsive';
 import Navbar from '../components/Navbar';
-import { useDispatch, useSelector } from 'react-redux';
-import { signupStart, signupFailure, signupSuccessReset } from '../redux/userRedux';
-import {signupSuccessAction} from '../redux/userRedux'
-
-import { signup, verifyOTP, resendOTP } from "../redux/apiCalls";
+import { useDispatch,useSelector } from 'react-redux';
+import { signupStart, signupSuccess, signupFailure } from '../redux/userRedux';
+import {signup} from "../redux/apiCalls"
 import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { signupSuccessReset } from '../redux/userRedux';
+
+
+
+
 
 const Register = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
   const navigate = useNavigate();
   const { isFetching, error, signupSuccess } = useSelector((state) => state.user);
   const [notification, setNotification] = useState(null);
-  const [showOtpInput, setShowOtpInput] = useState(false);
-  const [otp, setOtp] = useState('');
-
   const formik = useFormik({
     initialValues: {
       name: '',
@@ -30,44 +31,18 @@ const Register = () => {
     },
     validationSchema,
     onSubmit: async (values) => {
-      const result = await signup(dispatch, values);
-      if (result.success) {
-        setShowOtpInput(true);
-        setNotification(result.message);
-      } else {
-        setNotification(result.message);
-      }
+      await signup(dispatch, values);
     },
   });
-
-  const handleOtpVerification = async (e) => {
-    e.preventDefault();
-    dispatch(signupStart());
-    const result = await verifyOTP(formik.values.email, otp);
-    if (result.success) {
-      dispatch(signupSuccessAction());
-      setNotification('OTP verification successful! Redirecting to login page...');
+  useEffect(() => {
+    if (signupSuccess) {
+      setNotification('Signup successful! Redirecting to login page...');
       setTimeout(() => {
         navigate('/login');
         dispatch(signupSuccessReset());
       }, 3000);
-    } else {
-      dispatch(signupFailure());
-      setNotification(result.message);
     }
-  };
-
-  const handleResendOTP = async () => {
-    const result = await resendOTP(formik.values.email);
-    setNotification(result.message);
-  };
-
-  useEffect(() => {
-    if (signupSuccess) {
-      setNotification('Signup successful! Please verify your OTP.');
-      setShowOtpInput(true);
-    }
-  }, [signupSuccess]);
+  }, [signupSuccess, navigate,dispatch]);
 
   return (
     <>
@@ -76,10 +51,8 @@ const Register = () => {
         <Wrapper>
           <Title>CREATE AN ACCOUNT</Title>
           {notification && <Notification>{notification}</Notification>}
-          {!showOtpInput ? (
-            <Form onSubmit={formik.handleSubmit}>
-              {/* ... (keep all your existing input fields) ... */}
-              <InputField>
+          <Form onSubmit={formik.handleSubmit}>
+            <InputField>
               <Input
                 placeholder="name"
                 id="name"
@@ -175,57 +148,21 @@ const Register = () => {
               ) : null}
             </InputField>
 
-              
-              <Agreement>
-                By creating an account, I consent to the processing of my personal
-                data in accordance with the <b>PRIVACY POLICY</b>
-              </Agreement>
-              <CreateButton type="submit" disabled={isFetching}>
-                CREATE
-              </CreateButton>
-            </Form>
-          ) : (
-            <Form onSubmit={handleOtpVerification}>
-              <InputField>
-                <Input
-                  placeholder="Enter OTP"
-                  type="text"
-                  value={otp}
-                  onChange={(e) => setOtp(e.target.value)}
-                  required
-                />
-              </InputField>
-              <CreateButton type="submit" disabled={isFetching}>
-                Verify OTP
-              </CreateButton>
-              <ResendButton type="button" onClick={handleResendOTP} disabled={isFetching}>
-                Resend OTP
-              </ResendButton>
-            </Form>
-          )}
+            <Agreement>
+              By creating an account, I consent to the processing of my personal
+              data in accordance with the <b>PRIVACY POLICY</b>
+            </Agreement>
+            <CreateButton type="submit" disabled={isFetching} >CREATE</CreateButton>
+          </Form>
         </Wrapper>
       </Container>
     </>
   );
 };
 
-// ... (keep all your existing styled components) ...
-const ResendButton = styled.button`
-  padding: 10px;
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  
-  &:hover {
-    background-color: #45a049;
-  }
-`;
-
 const Container = styled.div`
   width: 100%;
-  height: 125vh;
+  height: 100vh;
   background: linear-gradient(
       to bottom, rgba(0, 128, 0, 0.5), rgba(0, 255, 0, 0.5)
     ),
@@ -237,7 +174,7 @@ const Container = styled.div`
   justify-content: center;
   ${mobile`
     width: 100vw;
-    height: 210vh;
+    height: 150vh;
   `}
 `;
 
@@ -263,17 +200,15 @@ const Form = styled.form`
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  
 `;
 
 const InputField = styled.div`
-  width: 50%;
+  width: 40%;
   margin-bottom: 15px;
   position: relative;
   ${mobile`
     width: 100%;
     padding: 5px 5px;
-    position
   `}
 `;
 

@@ -108,10 +108,11 @@ const Amount = styled.span`
 `;
 const CartButton = styled.button`
   padding: 5px;
+  width: 200px;
   border: 2px solid gray;
   background-color: white;
   cursor: pointer;
-  font-weight: 1000;
+  font-weight: 800;
   font-size:8px;
   &:hover {
     background-color: gray;
@@ -207,7 +208,7 @@ const Product = () => {
           </AddContainer>
         </InfoContainer>
       </Wrapper>
-      <Newsletter />
+      {/* <Newsletter /> */}
       <Footer />
     </Container>
   );

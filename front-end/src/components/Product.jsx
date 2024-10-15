@@ -4,6 +4,37 @@ import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Routes, Route, Navigate, Link } from 'react-router-dom';
+import { useDispatch } from "react-redux";
+import {addToWishlist} from "../redux/wishlistApiCalls"
+
+
+
+function Product({ item }) {
+  const dispatch = useDispatch();
+  const handleAddToWishlist = () => {
+    addToWishlist(dispatch, item._id);
+  };
+  return (
+    <Container>
+      <Circle>
+        <Image src={item.image} />
+      </Circle>
+      <Info>
+        {/* <Icon>
+          <ShoppingCartOutlinedIcon />
+        </Icon> */}
+        <Icon>
+          <Link to ={`/product/${item._id}`}>
+          <SearchOutlinedIcon />
+          </Link>
+        </Icon>
+        <Icon onClick={handleAddToWishlist} style={{ cursor: 'pointer' }}>
+          <FavoriteBorderOutlinedIcon />
+        </Icon>
+      </Info>
+    </Container>
+  );
+}
 
 const Info = styled.div`
   opacity: 0;
@@ -65,28 +96,4 @@ const Icon = styled.div`
     transform: scale(1.1);
   }
 `;
-
-function Product({ item }) {
-  return (
-    <Container>
-      <Circle>
-        <Image src={item.image} />
-      </Circle>
-      <Info>
-        <Icon>
-          <ShoppingCartOutlinedIcon />
-        </Icon>
-        <Icon>
-          <Link to ={`/product/${item._id}`}>
-          <SearchOutlinedIcon />
-          </Link>
-        </Icon>
-        <Icon>
-          <FavoriteBorderOutlinedIcon />
-        </Icon>
-      </Info>
-    </Container>
-  );
-}
-
 export default Product;

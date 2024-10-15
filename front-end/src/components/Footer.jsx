@@ -125,9 +125,9 @@ const Footer = () => {
           <PhoneIcon style={{marginRight:"10px"}}/> +91 9526661686
         </ContactItem>
         <ContactItem>
-          <EmailOutlinedIcon style={{marginRight:"10px"}} /> womenfashionshop@gmail.com
+          <EmailOutlinedIcon style={{marginRight:"10px"}} /> womenfashion@gmail.com
         </ContactItem>
-        <Payment src="https://i.ibb.co/Qfvn4z6/payment.png" />
+        {/* <Payment src="https://i.ibb.co/Qfvn4z6/payment.png" /> */}
       </Right>
       
     </Container>

@@ -4,9 +4,10 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import {sliderItems,categories} from '../data'
 import { useState } from 'react';
 import { mobile } from '../responsive';
+import { Link,useNavigate } from 'react-router-dom';
 const Container = styled.div`
 width: 100%;
-height: 100vh;
+height: 110vh;
 display: flex;
 /* background-color:aqua;  */
 position  :relative ;
@@ -52,7 +53,7 @@ const ImageContainer = styled.div`
   /* flex: 1;
   height: 100%; */
   flex: 1;
-  height: 100%;
+  height: 90%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -66,7 +67,7 @@ const Image = styled.img`
 `
 const InfoContainer = styled.div`
   flex:1;
-  padding: 50px;
+  padding: 30px;
 `;
 const Title = styled.h1`
 font-size:40px;
@@ -78,12 +79,14 @@ font-weight:500;
 letter-spacing: 3px;
 `
 const Button = styled.button`
-padding: 10px;
-font-size: 20px;
+padding: 5px;
+font-size: 15px;
 background-color:#009926;
 cursor: pointer;
+
 `
 const Slider = () => {
+
   const [slideIndex,setSlideIndex] = useState(0)
   const handleClick = direction => {
   if (direction === 'left') {
@@ -108,7 +111,9 @@ const Slider = () => {
           <InfoContainer>
             <Title>{item.title}</Title>
             <Description>{item.desc}  </Description>
-            <Button>shop now</Button>
+            <Link to={`/allproducts`}><Button>shop now</Button></Link>
+            
+           
 
           </InfoContainer>
           </Slide>

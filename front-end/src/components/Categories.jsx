@@ -12,6 +12,7 @@ const Container = styled.div`
   `}
 `;
 const Cathead = styled.div`
+text-align: center;
 color: green;
 `
 const Categories = () => {

@@ -1,7 +1,9 @@
 import { configureStore ,combineReducers} from "@reduxjs/toolkit";
 import cartReducer from "./cartRedux";
 import userReducer from "./userRedux";
-import { logout } from "./userRedux";
+import wishlistReducer from "./wishlistRedux";
+// import { logout } from "./userRedux";
+import { clearCart } from "./cartRedux";
 import {
     persistStore,
     persistReducer,
@@ -21,12 +23,12 @@ const persistConfig = {
     whitelist: ['cart'], // persist cart and user reducers
 };
 
-const rootReducer = combineReducers({user:userReducer,cart:cartReducer})
+const rootReducer = combineReducers({user:userReducer,cart:cartReducer,wishlist: wishlistReducer})
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 // Middleware to clear cart on logout
 const clearCartMiddleware = (store) => (next) => (action) => {
-    if (action.type === logout.type) {
+    if (action.type === clearCart.type) {
       store.dispatch({ type: 'clearCart' }); // Dispatch the clear cart action
     }
     return next(action);

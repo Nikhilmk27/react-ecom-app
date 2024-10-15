@@ -3,6 +3,7 @@ import styled from "styled-components";
 import SearchIcon from "@mui/icons-material/Search";
 import Badge from "@mui/material/Badge";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { mobile } from "../responsive";
 import { useSelector, useDispatch } from "react-redux";
 import { BrowserRouter, Routes, Route, Navigate, Link } from "react-router-dom";
@@ -11,6 +12,78 @@ import Cookies from "js-cookie";
 import { logout } from "../redux/userRedux";
 import { clearCart } from "../redux/cartRedux";
 
+const Navbar = () => {
+  const dispatch = useDispatch();
+  const quantity = useSelector((state) => state.cart.quantity);
+  const currentUser = useSelector((state) => state.user.currentUser);
+  const wishlistQuantity = useSelector(
+    (state) => state.wishlist.wishlistQuantity
+  );
+  console.log(`wishlist${wishlistQuantity}`);
+  const navigate = useNavigate();
+  console.log(quantity);
+  const handleLogout = (e) => {
+    e.preventDefault();
+    Cookies.remove("token"); // Remove the JWT token from cookies
+    dispatch(logout()); // Update the Redux state
+    navigate("/");
+  };
+  return (
+    <Container>
+      <Wrapper>
+        {/* <Left>
+          <Language>EN</Language>
+          <SearchContainer>
+            <Input />
+            <SearchIcon style={{ color: "gray", fontSize: "15px" }} />
+          </SearchContainer>
+        </Left> */}
+        <Center>
+          <Logo>FASHION</Logo>
+        </Center>
+        <Right>
+          {currentUser ? (
+            <>
+              <MenuItems>
+                <PlainButton onClick={handleLogout}>Logout</PlainButton>
+              </MenuItems>
+              <Link to="/wishlist">
+                <MenuItems>
+                  <Badge badgeContent={wishlistQuantity} color="primary">
+                    <FavoriteBorderIcon />
+                  </Badge>
+                </MenuItems>
+              </Link>
+              <Link to="/cart">
+                <MenuItems>
+                  <Badge badgeContent={quantity} color="primary">
+                    <ShoppingCartOutlinedIcon />
+                  </Badge>
+                </MenuItems>
+              </Link>
+            </>
+          ) : (
+            <>
+              <StyledLink to="/register">
+                <MenuItems>Register</MenuItems>
+              </StyledLink>
+              <StyledLink to="/login">
+                <MenuItems>Sign In</MenuItems>
+              </StyledLink>
+              <MenuItems>
+                <FavoriteBorderIcon></FavoriteBorderIcon>
+              </MenuItems>
+
+              <MenuItems>
+                <ShoppingCartOutlinedIcon />
+              </MenuItems>
+            </>
+          )}
+        </Right>
+      </Wrapper>
+    </Container>
+  );
+};
 const Container = styled.div`
   height: 50px;
   ${mobile`
@@ -81,16 +154,17 @@ const Right = styled.div`
   `}
 `;
 const MenuItems = styled.div`
-  font-size: 12px;
+  font-size: 10px;
   cursor: pointer;
   margin-left: 25px;
+  margin-top: 10px !important;
   ${mobile`
     font-size: 8px;
     margin-left: 2px;
   `}
 `;
 const StyledLink = styled(Link)`
-  text-decoration: none; 
+  text-decoration: none;
   color: inherit;
 `;
 
@@ -98,60 +172,5 @@ const PlainButton = styled.button`
   all: unset;
   cursor: pointer; /* optional: to keep pointer cursor on hover */
 `;
-
-const Navbar = () => {
-  const dispatch = useDispatch();
-  const quantity = useSelector((state) => state.cart.quantity);
-  const currentUser = useSelector((state) => state.user.currentUser);
-  const navigate = useNavigate();
-  console.log(quantity);
-  const handleLogout = (e) => {
-    e.preventDefault();
-    Cookies.remove("token"); // Remove the JWT token from cookies
-    dispatch(logout()); // Update the Redux state
-    navigate("/");
-  };
-  return (
-    <Container>
-      <Wrapper>
-        <Left>
-          <Language>EN</Language>
-          <SearchContainer>
-            <Input />
-            <SearchIcon style={{ color: "gray", fontSize: "15px" }} />
-          </SearchContainer>
-        </Left>
-        <Center>
-          <Logo>FASHION</Logo>
-        </Center>
-        <Right>
-          <StyledLink to="/register">
-            <MenuItems>Register</MenuItems>
-          </StyledLink>
-          <StyledLink to="/login">
-            <MenuItems>Sign In</MenuItems>
-          </StyledLink>
-          <MenuItems>
-            <PlainButton onClick={handleLogout}>Logout</PlainButton>
-          </MenuItems>
-          {currentUser ? (<Link to="/cart">
-            <MenuItems>
-              <Badge badgeContent={quantity} color="primary">
-                <ShoppingCartOutlinedIcon />
-              </Badge>
-            </MenuItems>
-          </Link>):(
-            <MenuItems>
-            
-              <ShoppingCartOutlinedIcon />
-            
-          </MenuItems>
-
-          )}
-        </Right>
-      </Wrapper>
-    </Container>
-  );
-};
 
 export default Navbar;
